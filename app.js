@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-var request = require("request");
+const req = require("request");
 
 const { WebhookClient } = require("dialogflow-fulfillment");
 
@@ -17,7 +17,7 @@ app.post("/webhook", function (request, response, next) {
     var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
     var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${weatherApi}`;
 
-    request.get(url, function (err, response, body) {
+    req.get(url, function (err, response, body) {
         if (err) {
             console.log("Error:", err);
             agent.add("Error! while getting weather info from server, try again.")
