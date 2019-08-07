@@ -22,7 +22,7 @@ app.post("/webhook", function (request, response, next) {
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
 
         if (cityName) {
-            rp.get(url, function (err, response, body) {
+           await rp.get(url, function (err, response, body) {
                 if (err) {
                     console.log("Error:", err);
                     agent.add("Error! while getting weather info from server, try again.")
