@@ -87,6 +87,7 @@ app.post("/webhook", function (request, response, next) {
                 }
 
             });
+        }
     }
 
     function fallback() {
