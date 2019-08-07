@@ -13,10 +13,10 @@ app.get("/", function (request, response) {
 app.post("/webhook", function (request, response, next) {
     const agent = new WebhookClient({ request: request, response: response });
 
-
+    
     function weather(agent) {
-
-        var city = req.body.city;
+        
+        var city = agent.parameters.city;    
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${weatherApi}`;
 
