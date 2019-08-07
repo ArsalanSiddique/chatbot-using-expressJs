@@ -26,21 +26,23 @@ app.post("/webhook", function (request, response, next) {
                     console.log("Error:", err);
                     agent.add("Error! while getting weather info from server, try again.")
                 } else {
-                    var weather = JSON.parse(body)
-                    if (weather.main == undefined) {
-                        agent.add("Something went wrong, try agian.");
-                    } else {
-                        var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
-                        console.log("temp: ", temCelcius)
-                        var weatherTemp = `${temCelcius}`;
-                        var name = `${weather.name}`;
-                        console.log("Name: ", name)
-                        var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
-                        console.log("Message: ", weatherTxt)
+
+                    // // var weather = JSON.parse(body)
+                    // // if (weather.main == undefined) {
+                    // //     agent.add("Something went wrong, try agian.");
+                    // // } else {
+                    // //     var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
+                    // //     console.log("temp: ", temCelcius)
+                    // //     var weatherTemp = `${temCelcius}`;
+                    // //     var name = `${weather.name}`;
+                    // //     console.log("Name: ", name)
+                    // //     var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
+                    // //     console.log("Message: ", weatherTxt)
                         
-                    }
-                    agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
-                    console.log('Success')
+                    // // }
+                    // agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
+                    // console.log('Success')
+                    agent.add(`URL: ${url}`);
                     return;
                 }
 
