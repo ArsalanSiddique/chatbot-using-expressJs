@@ -15,7 +15,7 @@ app.post("/webhook", function (request, response, next) {
     const agent = new WebhookClient({ request: request, response: response });
 
 
-   async function weather(agent) {
+    function weather(agent) {
 
         var cityName = agent.parameters.city;
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
