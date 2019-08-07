@@ -13,31 +13,37 @@ app.get("/", function (request, response) {
 app.post("/webhook", function (request, response, next) {
     const agent = new WebhookClient({ request: request, response: response });
 
-    
+
     function weather(agent) {
-        
-        var city = agent.parameters.city;    
+
+        var city = agent.parameters.city;
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${weatherApi}`;
 
-        req.get(url, function (err, response, body) {
-            if (err) {
-                console.log("Error:", err);
-                agent.add("Error! while getting weather info from server, try again.")
-            } else {
-                var weather = JSON.parse(body)
-                if (weather.main == undefined) {
-                    agent.add("Something went wrong, try agian.");
+        if (city) {
+            req.get(url, function (err, response, body) {
+                if (err) {
+                    console.log("Error:", err);
+                    agent.add("Error! while getting weather info from server, try again.")
                 } else {
-                    var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
-                    var weatherTemp = `${temCelcius}`;
-                    var name = `${weather.name}`;
-                    var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
-                    agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
+                    var weather = JSON.parse(body)
+                    if (weather.main == undefined) {
+                        agent.add("Something went wrong, try agian.");
+                    } else {
+                        var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
+                        var weatherTemp = `${temCelcius}`;
+                        var name = `${weather.name}`;
+                        var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
+                        agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
+                    }
                 }
-            }
 
-        });
+            });
+        } else {
+            agent.add(`Please Mention your city here `);
+            return;
+        }
+
     }
 
 
