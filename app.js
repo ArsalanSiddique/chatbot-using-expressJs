@@ -127,7 +127,7 @@ expressApp.post("/webhook", function(request, response, next) {
           lifespan: 5,
           parameters: { contextcity: cityName }
         });
-        agent.add(`The weather for the city ${cityName} is: ${message} `);
+        agent.add(`The weather for the city is ${cityName} is: ${message} `);
         console.log("Success:");
         return;
       }
