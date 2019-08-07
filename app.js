@@ -13,6 +13,29 @@ app.get("/", function (request, response) {
 app.post("/webhook", function (request, response, next) {
     const agent = new WebhookClient({ request: request, response: response });
 
+    var city = req.body.city;
+    var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
+    var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${weatherApi}`;
+
+    request.get(url, function (err, response, body) {
+        if (err) {
+            console.log("Error:", err);
+            agent.add("Error! while getting weather info from server, try again.")
+        } else {
+            var weather = JSON.parse(body)
+            if (weather.main == undefined) {
+               agent.add("Something went wrong, try agian.");
+            } else {
+                var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
+                var weatherTemp = `${temCelcius}`;
+                var name = `${weather.name}`;
+                var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
+                agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
+            }
+        }
+
+    })
+
 
     function welcome(agent) {
         agent.add("Hello! I am weatherBot, Want to know the weather?");
@@ -27,6 +50,7 @@ app.post("/webhook", function (request, response, next) {
     let intentMap = new Map();
     intentMap.set("Default Welcome Intent", welcome);
     intentMap.set("Default Fallback Intent", fallback);
+    intentMap.set("weather", weather);
 
     agent.handleRequest(intentMap);
 
@@ -35,39 +59,3 @@ app.listen(process.env.PORT || 3001, function () {
     console.log("app is running in 3000");
 });
 
-
-//==========  Abrar code start here //
-
-// const express = require("express");
-// const bodyParser = require("body-parser");
-// var request = require("request");
-
-// const { WebhookClient } = require("dialogflow-fulfillment");
-
-
-// let apiKey='4970e4f266675063af77ad454f45ebd6';
-
-
-// const expressApp = express().use(bodyParser.json());
-
-// expressApp.post("/webhook", function (request, response, next) {
-//   const agent = new WebhookClient({ request: request, response: response });
-
-//   function welcome(agent) {
-//     agent.add(`Good day! What can I do for you today?`);
-//   }
-
-//   function fallback(agent) {
-//     agent.add(`I didn't understand`);
-//     agent.add(`I'm sorry, can you try again?`);
-//   }
-//   let intentMap = new Map();
-//   intentMap.set("Default Welcome Intent", welcome);
-//   intentMap.set("Default Fallback Intent", fallback);
-
-//   agent.handleRequest(intentMap);
-
-// });
-// expressApp.listen(process.env.PORT || 3000, function () {
-//   console.log("app is running in 3000");
-// });
