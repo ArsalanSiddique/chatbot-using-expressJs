@@ -37,7 +37,7 @@ app.post("/webhook", function (request, response, next) {
                         console.log("Name: ", name)
                         var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
                         console.log("Message: ", weatherTxt)
-                        
+
                     }
                     agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
                     console.log('Success')
@@ -79,7 +79,7 @@ app.post("/webhook", function (request, response, next) {
                         console.log("Name: ", name)
                         var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
                         console.log("Message: ", weatherTxt)
-                        
+
                     }
                     agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
                     console.log('Success')
@@ -87,8 +87,8 @@ app.post("/webhook", function (request, response, next) {
                 }
 
             });
+        }
     }
-
     function fallback() {
         agent.add("Sorry! I didn't understand.");
         agent.add("Please type again.");
