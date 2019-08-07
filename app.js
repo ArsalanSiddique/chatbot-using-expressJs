@@ -31,11 +31,17 @@ app.post("/webhook", function (request, response, next) {
                         agent.add("Something went wrong, try agian.");
                     } else {
                         var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
+                        console.log("temp: ", temCelcius)
                         var weatherTemp = `${temCelcius}`;
                         var name = `${weather.name}`;
+                        console.log("Name: ", name)
                         var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
-                        agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
+                        console.log("Message: ", weatherTxt)
+                        
                     }
+                    agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
+                    console.log('Success')
+                    return;
                 }
 
             });
