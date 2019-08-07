@@ -134,43 +134,43 @@ expressApp.post("/webhook", function(request, response, next) {
     });
   }
 
-  async function humidityFinder(agent) {
-    const tempContext = agent.getContext("location");
-    console.log("return Context is :", tempContext);
-    var cityName;
-    if (agent.parameters.city) {
-      cityName = agent.parameters.city;
-    } else if (tempContext && tempContext.parameters.contextcity ) {
-      cityName = tempContext.parameters.contextcity;
-    } else {
-      agent.add(`Mention your city here `);
-      return;
+//   async function humidityFinder(agent) {
+//     const tempContext = agent.getContext("location");
+//     console.log("return Context is :", tempContext);
+//     var cityName;
+//     if (agent.parameters.city) {
+//       cityName = agent.parameters.city;
+//     } else if (tempContext && tempContext.parameters.contextcity ) {
+//       cityName = tempContext.parameters.contextcity;
+//     } else {
+//       agent.add(`Mention your city here `);
+//       return;
       
-    }
+//     }
 
-    let apiKey = "4970e4f266675063af77ad454f45ebd6";
-    let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&APPID=${apiKey}`;
+//     let apiKey = "4970e4f266675063af77ad454f45ebd6";
+//     let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&APPID=${apiKey}`;
 
-    await rp.get(url, function(err, response, body) {
-      if (err) {
-        console.log("error:", err);
-        agent.add("Error while getting weather report");
-      } else {
-        let weather = JSON.parse(body);
-        let humidity = weather.main.humidity;
-        console.log("City Name:", cityName);
-        console.log("Humidity:", humidity);
-        agent.setContext({
-          name: "location",
-          lifespan: 5,
-          parameters: { contextcity: cityName }
-        });
-        agent.add(`In ${cityName} humidity is: ${humidity}%`);
-        console.log("Success:");
-        return;
-      }
-    });
-  }
+//     await rp.get(url, function(err, response, body) {
+//       if (err) {
+//         console.log("error:", err);
+//         agent.add("Error while getting weather report");
+//       } else {
+//         let weather = JSON.parse(body);
+//         let humidity = weather.main.humidity;
+//         console.log("City Name:", cityName);
+//         console.log("Humidity:", humidity);
+//         agent.setContext({
+//           name: "location",
+//           lifespan: 5,
+//           parameters: { contextcity: cityName }
+//         });
+//         agent.add(`In ${cityName} humidity is: ${humidity}%`);
+//         console.log("Success:");
+//         return;
+//       }
+//     });
+//   }
 
   function welcome(agent) {
     agent.add(`Good day! What can I do for you today?`);
@@ -183,8 +183,8 @@ expressApp.post("/webhook", function(request, response, next) {
   let intentMap = new Map();
   intentMap.set("Default Welcome Intent", welcome);
   intentMap.set("Default Fallback Intent", fallback);
-  intentMap.set("Find weather", weatherFinder);
-  intentMap.set("Humidity", humidityFinder);
+  intentMap.set("weather", weatherFinder);
+  //intentMap.set("Humidity", humidityFinder);
 
   agent.handleRequest(intentMap);
 });
