@@ -15,8 +15,9 @@ app.post("/webhook", function (request, response, next) {
 
 
     function weather(agent) {
-        agent.add("Working properly");
-        // var cityName = agent.parameters.city;
+        
+        var cityName = agent.parameters.city;
+        agent.add(`Working properly ${cityName}`);
         // var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         // var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
 
