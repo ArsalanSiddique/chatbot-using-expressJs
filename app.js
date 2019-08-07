@@ -16,9 +16,9 @@ app.post("/webhook", function (request, response, next) {
 
     function weather(agent) {
 
-        var city = agent.parameters.city;
+        var cityName = agent.parameters.city;
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
-        var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${weatherApi}`;
+        var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
 
         if (city) {
             req.get(url, function (err, response, body) {
@@ -37,7 +37,7 @@ app.post("/webhook", function (request, response, next) {
                         console.log("Name: ", name)
                         var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
                         console.log("Message: ", weatherTxt)
-
+                        
                     }
                     agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
                     console.log('Success')
@@ -79,7 +79,7 @@ app.post("/webhook", function (request, response, next) {
                         console.log("Name: ", name)
                         var weatherTxt = 'It is ' + `${temCelcius}` + '&#8451; in ' + `${weather.name}` + '.';
                         console.log("Message: ", weatherTxt)
-
+                        
                     }
                     agent.add(`${weatherTxt} - temperature: ${weatherTemp}, City: ${name}`);
                     console.log('Success')
@@ -87,8 +87,8 @@ app.post("/webhook", function (request, response, next) {
                 }
 
             });
-        }
     }
+
     function fallback() {
         agent.add("Sorry! I didn't understand.");
         agent.add("Please type again.");
