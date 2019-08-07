@@ -20,7 +20,7 @@ app.post("/webhook", function (request, response, next) {
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
 
-        if (city) {
+        if (cityName) {
             req.get(url, function (err, response, body) {
                 if (err) {
                     console.log("Error:", err);
