@@ -63,49 +63,86 @@ app.post("/webhook", function (request, response, next) {
 
 
 
+    // async function humidity(agent) {
+
+    //     var cityName;
+    //     var tempContext = agent.getContext('location');
+
+    //     if (agent.parameters.city) {
+    //         cityName = agent.parameters.city;
+    //     } else if (tempContext && tempContext.parameters.contextCity) {
+    //         cityName = tempContext;
+    //     } else {
+    //         agent.add("Please mention your city name");
+    //     }
+
+    //     var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
+    //     var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
+
+    //     await rp.get(url, function (err, response, body) {
+    //         if (err) {
+    //             console.log("Error:", err);
+    //             agent.add("Error! while getting weather info from server, try again.")
+    //         } else {
+
+    //             var weather = JSON.parse(body)
+    //             if (weather.main == undefined) {
+    //                 agent.add("Something went wrong, try agian.");
+    //             } else {
+    //                 var name = `${weather.name}`;
+    //                 var humidity = `${weather.main.humidity}`;
+    //                 var weatherTxt = `It is ${humidity} °C in ${name}`;
+    //             }
+
+    //             agent.setContext({
+    //                 name: "location",
+    //                 life: 5,
+    //                 parameters: { contextCity: `${cityName}` }
+    //             });
+
+    //             agent.add(`${weatherTxt}`);
+    //             console.log('Success')
+
+    //             return;
+    //         }
+    //     });
+
+    // }
+
+
+
+
     async function humidity(agent) {
 
-        var cityName;
-        var tempContext = agent.getContext('location');
-
-        if (agent.parameters.city) {
-            cityName = agent.parameters.city;
-        } else if (tempContext && tempContext.parameters.contextCity) {
-            cityName = tempContext;
-        } else {
-            agent.add("Please mention your city name");
-        }
-
+        var cityName = agent.parameters.city;
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
 
-        await rp.get(url, function (err, response, body) {
-            if (err) {
-                console.log("Error:", err);
-                agent.add("Error! while getting weather info from server, try again.")
-            } else {
-
-                var weather = JSON.parse(body)
-                if (weather.main == undefined) {
-                    agent.add("Something went wrong, try agian.");
+        if (cityName) {
+           await rp.get(url, function (err, response, body) {
+                if (err) {
+                    console.log("Error:", err);
+                    agent.add("Error! while getting weather info from server, try again.")
                 } else {
-                    var name = `${weather.name}`;
-                    var humidity = `${weather.main.humidity}`;
-                    var weatherTxt = `It is ${humidity} °C in ${name}`;
+
+                    var weather = JSON.parse(body)
+                    if (weather.main == undefined) {
+                        agent.add("Something went wrong, try agian.");
+                    } else {
+                        var temCelcius = weather.main.humidity;
+                        var name = `${weather.name}`;
+                        var weatherTxt = `It is ${temCelcius} Humidity in ${name}`;
+                    }
+                    agent.add(`${weatherTxt}`);
+                    console.log('Success')
+                    return;
                 }
 
-                agent.setContext({
-                    name: "location",
-                    life: 5,
-                    parameters: { contextCity: `${cityName}` }
-                });
-
-                agent.add(`${weatherTxt}`);
-                console.log('Success')
-
-                return;
-            }
-        });
+            });
+        } else {
+            agent.add(`Please Mention your city here `);
+            return;
+        }
 
     }
 
