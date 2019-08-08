@@ -242,8 +242,8 @@ expressApp.post("/webhook", function(request, response, next) {
   let intentMap = new Map();
   intentMap.set("Default Welcome Intent", welcome);
   intentMap.set("Default Fallback Intent", fallback);
-  intentMap.set("Find weather", weatherFinder);
-  intentMap.set("Humidity", humidityFinder);
+  intentMap.set("weather", weatherFinder);
+  intentMap.set("humidity", humidityFinder);
 
   agent.handleRequest(intentMap);
 });
