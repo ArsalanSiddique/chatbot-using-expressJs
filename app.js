@@ -33,9 +33,10 @@ app.post("/webhook", function (request, response, next) {
                         agent.add("Something went wrong, try agian.");
                     } else {
                         var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
-                        var weatherTemp = `${temCelcius}`;
                         var name = `${weather.name}`;
-                        var weatherTxt = 'It is ' + `${temCelcius}` + '°C in ' + `${weather.name}` + '.';
+                        var country = `${weather.country}`;
+                        var descriptions = `${weather.country}`;
+                        var weatherTxt = `It is ${temCelcius} °C in ${name}, ${country} - ${descriptions}`;
                     }
                     agent.add(`${weatherTxt}`);
                     console.log('Success')
