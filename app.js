@@ -18,7 +18,7 @@ app.post("/webhook", function (request, response, next) {
     async function weather(agent) {
 
         var cityName;
-        const tempContext = agent.getContext('location');
+        const tempContext = agent.getContext("location");
 
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
@@ -49,7 +49,7 @@ app.post("/webhook", function (request, response, next) {
                 agent.setContext({
                     name: "location",
                     lifespan: 5,
-                    parameters: { contextCity: `${cityName}` }
+                    parameters: { contextCity: cityName }
                 });
 
                 agent.add(`${weatherTxt}`);
@@ -66,7 +66,7 @@ app.post("/webhook", function (request, response, next) {
     async function humidity(agent) {
 
         var cityName;
-        const tempContext = agent.getContext('location');
+        const tempContext = agent.getContext("location");
 
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
@@ -97,7 +97,7 @@ app.post("/webhook", function (request, response, next) {
                 agent.setContext({
                     name: "location",
                     lifespan: 5,
-                    parameters: { contextCity: `${cityName}` }
+                    parameters: { contextCity: cityName }
                 });
                 agent.add(`${weatherTxt}`);
                 console.log('Success')
