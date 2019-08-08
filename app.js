@@ -15,37 +15,97 @@ app.post("/webhook", function (request, response, next) {
     const agent = new WebhookClient({ request: request, response: response });
 
 
-   async function weather(agent) {
+    async function weather(agent) {
 
-        var cityName = agent.parameters.city;
+        var cityName;
+        var tempContext = agent.getContext('location');
+
+        if (agent.parameters.city) {
+            cityName = agent.parameters.city;
+        } else if (tempContext && tempContext.parameters.contextCity) {
+            cityName = tempContext;
+        } else {
+            agent.add("Please mention your city name");
+        }
+
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
 
-        if (cityName) {
-           await rp.get(url, function (err, response, body) {
-                if (err) {
-                    console.log("Error:", err);
-                    agent.add("Error! while getting weather info from server, try again.")
-                } else {
+        await rp.get(url, function (err, response, body) {
+            if (err) {
+                console.log("Error:", err);
+                agent.add("Error! while getting weather info from server, try again.")
+            } else {
 
-                    var weather = JSON.parse(body)
-                    if (weather.main == undefined) {
-                        agent.add("Something went wrong, try agian.");
-                    } else {
-                        var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
-                        var name = `${weather.name}`;
-                        var weatherTxt = `It is ${temCelcius} °C in ${name}`;
-                    }
-                    agent.add(`${weatherTxt}`);
-                    console.log('Success')
-                    return;
+                var weather = JSON.parse(body)
+                if (weather.main == undefined) {
+                    agent.add("Something went wrong, try agian.");
+                } else {
+                    var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
+                    var name = `${weather.name}`;
+                    var weatherTxt = `It is ${temCelcius} °C in ${name}`;
                 }
 
-            });
+                agent.setContext({
+                    name: "location",
+                    life: 5,
+                    parameters: { contextCity: `${cityName}` }
+                });
+
+                agent.add(`${weatherTxt}`);
+                console.log('Success')
+
+                return;
+            }
+        });
+
+    }
+
+
+
+    async function humidity(agent) {
+
+        var cityName;
+        var tempContext = agent.getContext('location');
+
+        if (agent.parameters.city) {
+            cityName = agent.parameters.city;
+        } else if (tempContext && tempContext.parameters.contextCity) {
+            cityName = tempContext;
         } else {
-            agent.add(`Please Mention your city here `);
-            return;
+            agent.add("Please mention your city name");
         }
+
+        var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
+        var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
+
+        await rp.get(url, function (err, response, body) {
+            if (err) {
+                console.log("Error:", err);
+                agent.add("Error! while getting weather info from server, try again.")
+            } else {
+
+                var weather = JSON.parse(body)
+                if (weather.main == undefined) {
+                    agent.add("Something went wrong, try agian.");
+                } else {
+                    var name = `${weather.name}`;
+                    var humidity = `${weather.main.humidity}`;
+                    var weatherTxt = `It is ${humidity} °C in ${name}`;
+                }
+
+                agent.setContext({
+                    name: "location",
+                    life: 5,
+                    parameters: { contextCity: `${cityName}` }
+                });
+
+                agent.add(`${weatherTxt}`);
+                console.log('Success')
+
+                return;
+            }
+        });
 
     }
 
@@ -64,6 +124,7 @@ app.post("/webhook", function (request, response, next) {
     intentMap.set("Default Welcome Intent", welcome);
     intentMap.set("Default Fallback Intent", fallback);
     intentMap.set("weather", weather);
+    intentMap.set("humidity", humidity);
 
     agent.handleRequest(intentMap);
 
