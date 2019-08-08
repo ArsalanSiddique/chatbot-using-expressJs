@@ -21,8 +21,10 @@ app.post("/webhook", function (request, response, next) {
         var tempContext = agent.getContext('location');
 
         if (agent.parameters.city) {
+            agent.add("First if works");
             cityName = agent.parameters.city;
         } else if (tempContext && tempContext.parameters.contextCity) {
+            agent.add("else if works");
             cityName = tempContext;
         } else {
             agent.add("Please mention your city name");
