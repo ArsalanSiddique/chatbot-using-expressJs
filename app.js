@@ -34,7 +34,7 @@ app.post("/webhook", function (request, response, next) {
                     } else {
                         var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
                         var name = `${weather.name}`;
-                        var weatherTxt = `It is ${temCelcius} °C in ${name} - ${weather.main.sys.country}`;
+                        var weatherTxt = `It is ${temCelcius} °C in ${name}`;
                     }
                     agent.add(`${weatherTxt}`);
                     console.log('Success')
