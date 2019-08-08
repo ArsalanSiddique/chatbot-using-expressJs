@@ -17,15 +17,14 @@ app.post("/webhook", function (request, response, next) {
 
     async function weather(agent) {
 
-        var cityName;
         const tempContext = agent.getContext("location");
-
+        var cityName;
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
-        } else if (tempContext && tempContext.parameters.contextCity) {
-            cityName = tempContext;
+        } else if (tempContext && tempContext.parameters.contextcity) {
+            cityName = tempContext.parameters.contextcity;
         } else {
-            agent.add("Please mention your city name");
+            agent.add(`Please Mention your city here `);
             return;
         }
 
@@ -43,8 +42,8 @@ app.post("/webhook", function (request, response, next) {
                     agent.add("Something went wrong, try agian.");
                 } else {
                     var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
-                    var name = `${weather.name}`;
-                    var weatherTxt = `It is ${temCelcius} °C in ${cityName}`;
+                    var humidity = `${weather.main.humidity}`;
+                    var weatherTxt = `It is ${temCelcius} °C and ${humidity} in ${cityName}`;
                 }
 
                 agent.setContext({
@@ -66,15 +65,14 @@ app.post("/webhook", function (request, response, next) {
 
     async function humidity(agent) {
 
-        var cityName;
         const tempContext = agent.getContext("location");
-
+        var cityName;
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
-        } else if (tempContext && tempContext.parameters.contextCity) {
-            cityName = tempContext;
+        } else if (tempContext && tempContext.parameters.contextcity) {
+            cityName = tempContext.parameters.contextcity;
         } else {
-            agent.add("Please mention your city name");
+            agent.add(`Please Mention your city here `);
             return;
         }
 
