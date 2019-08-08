@@ -23,7 +23,7 @@ app.post("/webhook", function (request, response, next) {
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
         } else if (tempContext && tempContext.parameters.contextCity) {
-            cityName = tempContext.parameters.contextCity;
+            cityName = tempContext;
         } else {
             agent.add("Please mention your city name for weather");
             return;
@@ -75,7 +75,7 @@ app.post("/webhook", function (request, response, next) {
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
         } else if (tempContext && tempContext.parameters.contextCity) {
-            cityName = tempContext.parameters.contextCity;
+            cityName = tempContext;
         } else {
             agent.add("Please mention your city name for humidity");
             return;
