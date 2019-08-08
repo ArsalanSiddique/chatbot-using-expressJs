@@ -26,6 +26,7 @@ app.post("/webhook", function (request, response, next) {
             cityName = tempContext;
         } else {
             agent.add("Please mention your city name");
+            return;
         }
 
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
@@ -74,6 +75,7 @@ app.post("/webhook", function (request, response, next) {
             cityName = tempContext;
         } else {
             agent.add("Please mention your city name");
+            return;
         }
 
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
