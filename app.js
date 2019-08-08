@@ -17,16 +17,20 @@ app.post("/webhook", function (request, response, next) {
 
     async function weather(agent) {
 
-        const tempContext = agent.getContext("location");
         var cityName;
+        const tempContext = agent.getContext("location");
+
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
-        } else if (tempContext && tempContext.parameters.contextcity) {
-            cityName = tempContext.parameters.contextcity;
+        } else if (tempContext && tempContext.parameters.contextCity) {
+            cityName = tempContext.parameters.contextCity;
         } else {
-            agent.add(`Please Mention your city here `);
+            agent.add("Please mention your city name for weather");
             return;
         }
+
+
+
 
         var weatherApi = 'aeef3d2ed53e72fbe6c0a8309db31f61';
         var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherApi}`;
@@ -43,7 +47,7 @@ app.post("/webhook", function (request, response, next) {
                 } else {
                     var temCelcius = Math.round(((weather.main.temp - 32) * 5 / 9));
                     var humidity = `${weather.main.humidity}`;
-                    var weatherTxt = `It is ${temCelcius} °C and ${humidity} in ${cityName}`;
+                    var weatherTxt = `It is ${temCelcius} °C and ${humidity} humidity in ${cityName}`;
                 }
 
                 agent.setContext({
@@ -65,14 +69,15 @@ app.post("/webhook", function (request, response, next) {
 
     async function humidity(agent) {
 
-        const tempContext = agent.getContext("location");
         var cityName;
+        const tempContext = agent.getContext("location");
+
         if (agent.parameters.city) {
             cityName = agent.parameters.city;
-        } else if (tempContext && tempContext.parameters.contextcity) {
-            cityName = tempContext.parameters.contextcity;
+        } else if (tempContext && tempContext.parameters.contextCity) {
+            cityName = tempContext.parameters.contextCity;
         } else {
-            agent.add(`Please Mention your city here `);
+            agent.add("Please mention your city name for humidity");
             return;
         }
 
