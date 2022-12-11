@@ -11,7 +11,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "dialogflow-fulfillment": "^0.3.0-beta.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase-functions": "^3.1.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
